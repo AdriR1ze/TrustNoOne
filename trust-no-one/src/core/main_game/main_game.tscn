@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://c8k4qwecwnaon"]
+
+[ext_resource type="Script" uid="uid://pvr0hjy253sr" path="res://src/core/main_game/main_game.gd" id="1_3fed5"]
+
+[node name="MainGame" type="Node" unique_id=995885749]
+script = ExtResource("1_3fed5")
+
+[node name="System" type="Node" parent="." unique_id=778923618]
+
+[node name="World" type="Node2D" parent="." unique_id=158094143]
+
+[node name="LevelRoot" type="Node2D" parent="World" unique_id=1145826930]
+unique_name_in_owner = true
+
+[node name="EntityRoot" type="Node2D" parent="World" unique_id=421318418]
+unique_name_in_owner = true
+
+[node name="HudLayer" type="CanvasLayer" parent="." unique_id=596865868]
+
+[node name="HudRoot" type="Control" parent="HudLayer" unique_id=2140345970]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PauseLayer" type="CanvasLayer" parent="." unique_id=2115188027]
+
+[node name="PauseRoot" type="Control" parent="PauseLayer" unique_id=1732463135]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DebugLayer" type="CanvasLayer" parent="." unique_id=1471141691]
+
+[node name="DebugLayer" type="Control" parent="DebugLayer" unique_id=1983261525]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
