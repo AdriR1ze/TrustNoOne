@@ -2,5 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dscqyknhahwe5" path="res://src/gameplay/player/player.gd" id="1_kh5p4"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kgtat"]
+
 [node name="Player" type="CharacterBody2D" unique_id=811484957]
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_kh5p4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=250403515]
+shape = SubResource("RectangleShape2D_kgtat")

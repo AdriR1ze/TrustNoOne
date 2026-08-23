@@ -40,26 +40,19 @@ func _init_player() -> void:
 		push_error("Loaded player doesn't work")
 		return
 
-	player.died.connect(_on_player_died)
-
 	entity_root.add_child(player)
 
 
 func load_level(level_scene: String) -> void:
 	print(level_scene)
 	_current_level_index = LEVELS.find(level_scene)
-	_deferred_load_level.call_deferred(
-		level_scene
-	)
-
-
+	_deferred_load_level.call_deferred(level_scene)
 
 
 
 
 func _deferred_load_level(level_scene: String) -> void:
 	if _current_level != null:
-		_stop_current_level()
 		_current_level.queue_free()
 		_current_level = null
 
@@ -80,13 +73,9 @@ func _deferred_load_level(level_scene: String) -> void:
 		push_error("Couldn't instantiate the current level")
 		return
 
-	_current_level.level_completed.connect(_on_level_completed)
 
 	level_root.add_child(_current_level)
-
-	if _build_hud != null:
-		_build_hud.visible = not _is_tutorial_level(level_scene)
-
+	
 	await get_tree().process_frame
 
 	if player != null:

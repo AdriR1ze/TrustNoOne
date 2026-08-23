@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://baiffk222kstj"]
+
+[ext_resource type="Script" uid="uid://bsn8tpcxm3ke" path="res://debug_text_overlay.gd" id="1_jv051"]
+
+[node name="DebugTextOverlay" type="Control" unique_id=1012867746]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jv051")
+
+[node name="FpsLabel" type="Label" parent="." unique_id=257526858]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DebugLabel" type="Label" parent="." unique_id=1663218677]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

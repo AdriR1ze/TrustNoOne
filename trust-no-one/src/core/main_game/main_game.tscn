@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://c8k4qwecwnaon"]
 
 [ext_resource type="Script" uid="uid://pvr0hjy253sr" path="res://src/core/main_game/main_game.gd" id="1_3fed5"]
+[ext_resource type="Script" uid="uid://dvxwgnaldvnig" path="res://src/debug/debug.gd" id="2_6yl8a"]
+[ext_resource type="PackedScene" uid="uid://baiffk222kstj" path="res://src/debug/debug_text_overlay.tscn" id="3_6n4xl"]
 
 [node name="MainGame" type="Node" unique_id=995885749]
 script = ExtResource("1_3fed5")
@@ -13,6 +15,9 @@ script = ExtResource("1_3fed5")
 unique_name_in_owner = true
 
 [node name="EntityRoot" type="Node2D" parent="World" unique_id=421318418]
+unique_name_in_owner = true
+
+[node name="EffectsRoot" type="Node2D" parent="World" unique_id=375717947]
 unique_name_in_owner = true
 
 [node name="HudLayer" type="CanvasLayer" parent="." unique_id=596865868]
@@ -35,7 +40,20 @@ offset_bottom = 40.0
 
 [node name="DebugLayer" type="CanvasLayer" parent="." unique_id=1471141691]
 
-[node name="DebugLayer" type="Control" parent="DebugLayer" unique_id=1983261525]
+[node name="DebugRoot" type="Control" parent="DebugLayer" unique_id=1983261525]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_6yl8a")
+
+[node name="DebugTextOverlay" parent="DebugLayer/DebugRoot" unique_id=1012867746 instance=ExtResource("3_6n4xl")]
+layout_mode = 1
+
+[node name="TransitionLayer" type="CanvasLayer" parent="." unique_id=1225934313]
+
+[node name="TransitionRoot" type="Control" parent="TransitionLayer" unique_id=907604193]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
