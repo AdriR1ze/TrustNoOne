@@ -9,15 +9,15 @@ script = ExtResource("1_3fed5")
 
 [node name="System" type="Node" parent="." unique_id=778923618]
 
-[node name="World" type="Node2D" parent="." unique_id=158094143]
+[node name="World" type="Node3D" parent="." unique_id=708601580]
 
-[node name="LevelRoot" type="Node2D" parent="World" unique_id=1145826930]
+[node name="LevelRoot" type="Node3D" parent="World" unique_id=1077522221]
 unique_name_in_owner = true
 
-[node name="EntityRoot" type="Node2D" parent="World" unique_id=421318418]
+[node name="EntityRoot" type="Node3D" parent="World" unique_id=56856963]
 unique_name_in_owner = true
 
-[node name="EffectsRoot" type="Node2D" parent="World" unique_id=375717947]
+[node name="EffectsRoot" type="Node3D" parent="World" unique_id=1151566005]
 unique_name_in_owner = true
 
 [node name="HudLayer" type="CanvasLayer" parent="." unique_id=596865868]
