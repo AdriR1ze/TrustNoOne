@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 PhotoStorage="*res://src/gameplay/investigation/photo_storage.gd"
-
 ObjectManager="*uid://cv6hcym4tu5ta"
 ObjectDb="*uid://n5lrhqotewvl"
 AnotacionesDb="*res://AnotacionesDB.gd"

@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://b6q7dmi143jso" path="res://src/core/main_game/libro.gd" id="2_ibp4d"]
 [ext_resource type="PackedScene" uid="uid://baiffk222kstj" path="res://src/debug/debug_text_overlay.tscn" id="3_6n4xl"]
 [ext_resource type="Script" uid="uid://by46ay4q6vmtu" path="res://src/gameplay/investigation/ui/photo_book_ui.gd" id="4_photobook"]
+[ext_resource type="PackedScene" path="res://src/core/main_game/libro_ui.tscn" id="4_libro"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_tg3de"]
-[ext_resource type="PackedScene" path="res://src/core/main_game/libro_ui.tscn" id="4_libro"]
 
 [node name="MainGame" type="Node" unique_id=995885749]
 script = ExtResource("1_3fed5")
