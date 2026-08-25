@@ -1,6 +1,9 @@
 extends Resource
 class_name Page
 
+@export var titulo : String = ""
+@export var mostrar_anotaciones : bool = false
+
 var previous_page : Page
 var next_page : Page
 

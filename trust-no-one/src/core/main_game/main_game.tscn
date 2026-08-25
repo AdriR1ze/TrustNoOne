@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dvxwgnaldvnig" path="res://src/debug/debug.gd" id="2_6yl8a"]
 [ext_resource type="Script" uid="uid://b6q7dmi143jso" path="res://src/core/main_game/libro.gd" id="2_ibp4d"]
 [ext_resource type="PackedScene" uid="uid://baiffk222kstj" path="res://src/debug/debug_text_overlay.tscn" id="3_6n4xl"]
+[ext_resource type="PackedScene" path="res://src/core/main_game/libro_ui.tscn" id="4_libro"]
 
 [node name="MainGame" type="Node" unique_id=995885749]
 script = ExtResource("1_3fed5")
@@ -32,6 +33,18 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="AbrirLibroButton" type="Button" parent="HudLayer/HudRoot" unique_id=2140345971]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 140.0
+offset_bottom = 40.0
+text = "Anotaciones"
+
+[node name="LibroUi" parent="HudLayer" unique_id=2140345972 instance=ExtResource("4_libro")]
+layout_mode = 3
 
 [node name="PauseLayer" type="CanvasLayer" parent="." unique_id=2115188027]
 
