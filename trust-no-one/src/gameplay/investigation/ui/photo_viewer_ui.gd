@@ -1,3 +1,4 @@
+class_name PhotoViewerUI
 extends Control
 ## Vista expandida de una foto individual.
 ## Permite ver la foto a tamaño grande y navegar entre fotos con flechas.
@@ -21,7 +22,7 @@ var _background: ColorRect
 
 func _ready() -> void:
 	visible = false
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 	_build_ui()

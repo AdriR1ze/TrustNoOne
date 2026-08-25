@@ -5,7 +5,7 @@ extends Control
 
 
 ## Referencia al visor expandido.
-var _viewer: Control  # PhotoViewerUI
+var _viewer: PhotoViewerUI
 var _grid: GridContainer
 var _scroll: ScrollContainer
 var _background: ColorRect
@@ -14,9 +14,7 @@ var _empty_label: Label
 var _count_label: Label
 var _is_open: bool = false
 
-## Prefijo de script para los thumbnails creados dinámicamente.
-const PhotoThumbnailScript = preload("res://src/gameplay/investigation/ui/photo_thumbnail.gd")
-const PhotoViewerScript = preload("res://src/gameplay/investigation/ui/photo_viewer_ui.gd")
+
 
 
 func _ready() -> void:
@@ -156,8 +154,7 @@ func _build_ui() -> void:
 
 
 func _build_viewer() -> void:
-	_viewer = Control.new()
-	_viewer.set_script(PhotoViewerScript)
+	_viewer = PhotoViewerUI.new()
 	_viewer.name = "PhotoViewer"
 	add_child(_viewer)
 	_viewer.back_requested.connect(_on_viewer_back)
@@ -175,11 +172,9 @@ func _refresh_grid() -> void:
 
 	for i in range(photos.size()):
 		var photo := photos[i]
-		var thumbnail := TextureButton.new()
-		thumbnail.set_script(PhotoThumbnailScript)
+		var thumbnail := PhotoThumbnail.new()
 		thumbnail.name = "Thumb_%s" % photo.photo_id.left(8)
 		_grid.add_child(thumbnail)
-		# Llamar setup después de que _ready del thumbnail se ejecute
 		thumbnail.setup.call_deferred(photo)
 		var idx := i
 		thumbnail.thumbnail_clicked.connect(func(_id: String): _open_viewer(idx))

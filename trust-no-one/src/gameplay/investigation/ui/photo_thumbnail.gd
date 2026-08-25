@@ -1,3 +1,4 @@
+class_name PhotoThumbnail
 extends TextureButton
 ## Celda de thumbnail para la grilla del libro de fotos.
 ## Muestra un preview de la foto y su nombre.
@@ -30,6 +31,7 @@ func _ready() -> void:
 	_name_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
 	_name_label.add_theme_constant_override("shadow_offset_x", 1)
 	_name_label.add_theme_constant_override("shadow_offset_y", 1)
+	_name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_name_label)
 
 	pressed.connect(_on_pressed)
