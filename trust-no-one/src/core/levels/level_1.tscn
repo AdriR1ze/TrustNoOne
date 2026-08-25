@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cvm4y1qkgjn68" path="res://src/core/levels/level_1.gd" id="1_ah554"]
 [ext_resource type="PackedScene" uid="uid://co2cj4cakfe0q" path="res://src/gameplay/bloques/objeto.tscn" id="2_bjucl"]
+[ext_resource type="AudioStream" uid="uid://sspcmc8ufgbg" path="res://assets/Dusty Echoes.mp3" id="3_vpj1k"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jv051"]
 albedo_color = Color(1, 0.5372549, 1, 1)
@@ -32,3 +33,9 @@ shape = SubResource("BoxShape3D_abukt")
 
 [node name="StaticBody3D" parent="." unique_id=2012762352 instance=ExtResource("2_bjucl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4416275, 0.9999981, 13.85774)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=594118342]
+stream = ExtResource("3_vpj1k")
+attenuation_model = 3
+volume_db = -4.0
+autoplay = true

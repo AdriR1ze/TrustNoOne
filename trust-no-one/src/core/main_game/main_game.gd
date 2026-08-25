@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 
 
 var _current_level: BaseLevel
@@ -70,10 +70,7 @@ func _deferred_load_level(level_scene: String) -> void:
 
 	await get_tree().process_frame
 
-	var new_level: PackedScene = ResourceLoader.load(
-		level_scene,
-		"PackedScene"
-	) as PackedScene
+	var new_level: PackedScene = ResourceLoader.load(level_scene, "PackedScene") as PackedScene
 
 	if new_level == null:
 		push_error("Couldn't load new level: " + level_scene)
