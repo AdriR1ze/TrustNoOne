@@ -1,11 +1,14 @@
-extends Node
+﻿extends Node
 
 
-var _current_level : BaseLevel
+var _current_level: BaseLevel
 var _is_respawning := false
 
+const LEVEL_1 := "res://src/core/levels/level_1.tscn"
 
-const LEVELS: Array[String] = []
+const LEVELS: Array[String] = [
+	LEVEL_1,
+]
 
 var _current_level_index := 0
 
@@ -21,14 +24,16 @@ var _current_level_index := 0
 @onready var transition_root: Control = %TransitionRoot
 
 var player: Player = null
+var current_level_name := ""
 
 func _ready() -> void:
+	add_to_group("main_game")
 	_init_player()
+	load_level(LEVEL_1)
 
 
 func _init_player() -> void:
-
-	var player_scene: PackedScene = ResourceLoader.load("res://src/gameplay/player/player.tscn"	)
+	var player_scene: PackedScene = ResourceLoader.load("res://src/gameplay/player/player.tscn")
 
 	if player_scene == null:
 		push_error("Error opening the Player Scene")
@@ -44,11 +49,9 @@ func _init_player() -> void:
 
 
 func load_level(level_scene: String) -> void:
-	print(level_scene)
+	print("Loading level: ", level_scene)
 	_current_level_index = LEVELS.find(level_scene)
 	_deferred_load_level.call_deferred(level_scene)
-
-
 
 
 func _deferred_load_level(level_scene: String) -> void:
@@ -64,7 +67,7 @@ func _deferred_load_level(level_scene: String) -> void:
 	) as PackedScene
 
 	if new_level == null:
-		push_error("Couldn't load new level")
+		push_error("Couldn't load new level: " + level_scene)
 		return
 
 	_current_level = new_level.instantiate() as BaseLevel
@@ -73,20 +76,16 @@ func _deferred_load_level(level_scene: String) -> void:
 		push_error("Couldn't instantiate the current level")
 		return
 
+	current_level_name = _current_level.name
 
 	level_root.add_child(_current_level)
-	
-	await get_tree().process_frame
 
-	if player != null:
-		player.process_mode = Node.PROCESS_MODE_PAUSABLE
-		player.is_building = false
+	await get_tree().process_frame
 
 	_place_player_at_level_spawn()
 
 
 func _place_player_at_level_spawn() -> void:
-
 	if player == null:
 		push_error("Cannot place player in level because player is null")
 		return
@@ -95,4 +94,4 @@ func _place_player_at_level_spawn() -> void:
 		push_error("Cannot place player in level because level is null")
 		return
 
-	player.global_position = (_current_level.get_default_player_spawn())
+	player.global_position = _current_level.get_default_player_spawn()

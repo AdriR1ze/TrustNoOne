@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://chd0v72majar8"]
+
+[ext_resource type="Script" uid="uid://cvm4y1qkgjn68" path="res://src/core/levels/level_1.gd" id="1_ah554"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jv051"]
+albedo_color = Color(1, 0.5372549, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kgtat"]
+material = SubResource("StandardMaterial3D_jv051")
+size = Vector3(69.56325, 0.0079956055, 51.91504)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_abukt"]
+size = Vector3(70.13777, 1, 51.71785)
+
+[node name="Level1" type="Node3D" unique_id=1615080625]
+script = ExtResource("1_ah554")
+posicion = Vector3(0, 1.045, 0)
+
+[node name="PlayerSpawner" type="Marker3D" parent="." unique_id=1312551244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5295086, 0)
+
+[node name="RigidBody3D" type="StaticBody3D" parent="." unique_id=353805603]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D" unique_id=949322385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.615585, 0.00021362305, -0.7746582)
+mesh = SubResource("BoxMesh_kgtat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1066698962]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.54377, 0, -1.0298386)
+shape = SubResource("BoxShape3D_abukt")
