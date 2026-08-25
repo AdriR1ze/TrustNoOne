@@ -19,6 +19,9 @@ config/icon="res://icon.svg"
 
 PhotoStorage="*res://src/gameplay/investigation/photo_storage.gd"
 
+ObjectManager="*uid://cv6hcym4tu5ta"
+ObjectDb="*uid://n5lrhqotewvl"
+
 [display]
 
 window/size/viewport_width=1920
