@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://6y8mgiyengvw" path="res://src/gameplay/player/state_machine.gd" id="3_sm"]
 [ext_resource type="Script" uid="uid://bx8e6w3u2v6xn" path="res://src/gameplay/player/states/zoom_state.gd" id="4_zoom"]
 [ext_resource type="Script" uid="uid://dpai46xsfxlft" path="res://src/gameplay/camera/camera_component.gd" id="5_cam"]
+[ext_resource type="Script" path="res://src/gameplay/investigation/photo_capture_component.gd" id="6_photo"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kgtat"]
 
@@ -34,3 +35,6 @@ script = ExtResource("3_sm")
 
 [node name="ZoomState" type="Node" parent="StateMachine" unique_id=1245479979]
 script = ExtResource("4_zoom")
+
+[node name="PhotoCaptureComponent" type="Node" parent="."]
+script = ExtResource("6_photo")
