@@ -2,12 +2,16 @@
 
 [ext_resource type="Script" uid="uid://pvr0hjy253sr" path="res://src/core/main_game/main_game.gd" id="1_3fed5"]
 [ext_resource type="Script" uid="uid://dvxwgnaldvnig" path="res://src/debug/debug.gd" id="2_6yl8a"]
+[ext_resource type="Script" uid="uid://b6q7dmi143jso" path="res://src/core/main_game/libro.gd" id="2_ibp4d"]
 [ext_resource type="PackedScene" uid="uid://baiffk222kstj" path="res://src/debug/debug_text_overlay.tscn" id="3_6n4xl"]
 
 [node name="MainGame" type="Node" unique_id=995885749]
 script = ExtResource("1_3fed5")
 
 [node name="System" type="Node" parent="." unique_id=778923618]
+
+[node name="Libro" type="Node" parent="System" unique_id=968010533]
+script = ExtResource("2_ibp4d")
 
 [node name="World" type="Node3D" parent="." unique_id=708601580]
 

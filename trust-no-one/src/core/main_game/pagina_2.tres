@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Page" format=3 uid="uid://dkfgk3jdlrnv8"]
+
+[ext_resource type="Script" uid="uid://b0d0mely0c1tk" path="res://src/core/main_game/pagina.gd" id="1_5diii"]
+
+[resource]
+script = ExtResource("1_5diii")
+metadata/_custom_type_script = "uid://b0d0mely0c1tk"
