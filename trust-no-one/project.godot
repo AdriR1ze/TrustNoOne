@@ -21,6 +21,7 @@ PhotoStorage="*res://src/gameplay/investigation/photo_storage.gd"
 
 ObjectManager="*uid://cv6hcym4tu5ta"
 ObjectDb="*uid://n5lrhqotewvl"
+AnotacionesDb="*res://AnotacionesDB.gd"
 
 [display]
 
@@ -77,17 +78,22 @@ toggle_photo_book={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":66,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
+anotar_objeto={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":113,"location":0,"echo":false,"script":null)
+]
+}
 
 [layer_names]
 
-2d_physics/layer_1="World"
 2d_navigation/layer_1="World"
-2d_physics/layer_2="Player"
+3d_physics/layer_1="World"
 2d_navigation/layer_2="Player"
-2d_physics/layer_3="Interactable"
+3d_physics/layer_2="Player"
 2d_navigation/layer_3="Interactables"
-2d_physics/layer_4="Enemies"
+3d_physics/layer_3="Interactable"
 2d_navigation/layer_4="Enemies"
+3d_physics/layer_4="Enemies"
 
 [physics]
 

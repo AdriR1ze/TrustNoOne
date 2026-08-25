@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://chd0v72majar8"]
 
 [ext_resource type="Script" uid="uid://cvm4y1qkgjn68" path="res://src/core/levels/level_1.gd" id="1_ah554"]
+[ext_resource type="PackedScene" uid="uid://co2cj4cakfe0q" path="res://src/gameplay/bloques/objeto.tscn" id="2_bjucl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jv051"]
 albedo_color = Color(1, 0.5372549, 1, 1)
@@ -28,3 +29,6 @@ mesh = SubResource("BoxMesh_kgtat")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1066698962]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.54377, 0, -1.0298386)
 shape = SubResource("BoxShape3D_abukt")
+
+[node name="StaticBody3D" parent="." unique_id=2012762352 instance=ExtResource("2_bjucl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4416275, 0.9999981, 13.85774)

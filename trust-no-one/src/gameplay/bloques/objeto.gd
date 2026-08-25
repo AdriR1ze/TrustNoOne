@@ -1,4 +1,4 @@
-extends Node
+extends StaticBody3D
 class_name Objeto
 
 var id_unico : int

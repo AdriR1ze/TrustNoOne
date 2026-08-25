@@ -22,14 +22,23 @@ var _current_level_index := 0
 @onready var hud_root: Control = $HudLayer/HudRoot
 @onready var pause_root: Control = %PauseRoot
 @onready var transition_root: Control = %TransitionRoot
+@onready var libro: Libro = $System/Libro
+@onready var libro_ui: LibroUi = $HudLayer/LibroUi
+@onready var abrir_libro_button: Button = $HudLayer/HudRoot/AbrirLibroButton
 
 var player: Player = null
 var current_level_name := ""
 
 func _ready() -> void:
 	add_to_group("main_game")
+	abrir_libro_button.pressed.connect(_abrir_pagina_tres)
 	_init_player()
 	load_level(LEVEL_1)
+
+
+func _abrir_pagina_tres() -> void:
+	libro.current_page = libro.pagina_3
+	libro_ui.mostrar_pagina(libro.pagina_3)
 
 
 func _init_player() -> void:

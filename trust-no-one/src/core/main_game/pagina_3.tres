@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource("1_8ahsf")
+titulo = "Anotaciones"
+mostrar_anotaciones = true
 metadata/_custom_type_script = "uid://b0d0mely0c1tk"
