@@ -5,18 +5,23 @@ extends Control
 
 
 ## Referencia al visor expandido.
-var _viewer: Control  # PhotoViewerUI
+var _viewer: PhotoViewerUI
 var _grid: GridContainer
 var _scroll: ScrollContainer
-var _background: ColorRect
+var _page_panel: PanelContainer
 var _title_label: Label
 var _empty_label: Label
 var _count_label: Label
 var _is_open: bool = false
 
-## Prefijo de script para los thumbnails creados dinámicamente.
-const PhotoThumbnailScript = preload("res://src/gameplay/investigation/ui/photo_thumbnail.gd")
-const PhotoViewerScript = preload("res://src/gameplay/investigation/ui/photo_viewer_ui.gd")
+## Colores del libro
+const COLOR_PAGE := Color(0.96, 0.94, 0.90)         # Crema/papel
+const COLOR_PAGE_BORDER := Color(0.78, 0.74, 0.68)   # Borde cuero
+const COLOR_COVER := Color(0.18, 0.14, 0.12, 0.92)   # Fondo oscuro detrás
+const COLOR_TITLE := Color(0.25, 0.20, 0.15)          # Título marrón oscuro
+const COLOR_SUBTITLE := Color(0.50, 0.45, 0.38)       # Subtextos
+const COLOR_HINT := Color(0.65, 0.60, 0.52)           # Hints
+const COLOR_ACCENT := Color(0.55, 0.35, 0.20)         # Acento cálido
 
 
 func _ready() -> void:
@@ -79,85 +84,132 @@ func close_book() -> void:
 func _build_ui() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
-	# Fondo
-	_background = ColorRect.new()
-	_background.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_background.color = Color(0.08, 0.06, 0.1, 0.92)
-	_background.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_child(_background)
+	# Fondo oscuro detrás del libro (simula escritorio)
+	var bg_overlay := ColorRect.new()
+	bg_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg_overlay.color = COLOR_COVER
+	bg_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(bg_overlay)
 
-	# Contenedor principal
+	# Panel "página" centrado (no ocupa toda la pantalla)
+	_page_panel = PanelContainer.new()
+	_page_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_page_panel.set_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 0)
+	# Márgenes para que parezca una página sobre el escritorio
+	_page_panel.offset_left = 120
+	_page_panel.offset_right = -120
+	_page_panel.offset_top = 50
+	_page_panel.offset_bottom = -50
+
+	# Estilo de la página
+	var page_style := StyleBoxFlat.new()
+	page_style.bg_color = COLOR_PAGE
+	page_style.border_color = COLOR_PAGE_BORDER
+	page_style.set_border_width_all(2)
+	page_style.set_corner_radius_all(4)
+	page_style.shadow_color = Color(0.0, 0.0, 0.0, 0.25)
+	page_style.shadow_size = 12
+	page_style.shadow_offset = Vector2(4, 6)
+	page_style.set_content_margin_all(40)
+	_page_panel.add_theme_stylebox_override("panel", page_style)
+	add_child(_page_panel)
+
+	# Contenedor vertical dentro de la página
 	var vbox := VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
-	vbox.set_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 50)
-	add_child(vbox)
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox.add_theme_constant_override("separation", 16)
+	_page_panel.add_child(vbox)
 
-	# Barra de título
-	var title_bar := HBoxContainer.new()
-	title_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	vbox.add_child(title_bar)
+	# === Encabezado ===
+	var header := HBoxContainer.new()
+	header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_theme_constant_override("separation", 12)
+	vbox.add_child(header)
 
+	# Título estilo manuscrito/diario
 	_title_label = Label.new()
-	_title_label.text = "📷 Fotografías"
-	_title_label.add_theme_font_size_override("font_size", 28)
-	_title_label.add_theme_color_override("font_color", Color.WHITE)
-	title_bar.add_child(_title_label)
+	_title_label.text = "Fotografías"
+	_title_label.add_theme_font_size_override("font_size", 32)
+	_title_label.add_theme_color_override("font_color", COLOR_TITLE)
+	header.add_child(_title_label)
 
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title_bar.add_child(spacer)
+	header.add_child(spacer)
 
+	# Contador de fotos
 	_count_label = Label.new()
-	_count_label.add_theme_font_size_override("font_size", 18)
-	_count_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.7))
-	title_bar.add_child(_count_label)
+	_count_label.add_theme_font_size_override("font_size", 16)
+	_count_label.add_theme_color_override("font_color", COLOR_SUBTITLE)
+	_count_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	header.add_child(_count_label)
 
+	# Botón cerrar discreto
 	var close_btn := Button.new()
-	close_btn.text = "✕ Cerrar"
-	close_btn.add_theme_font_size_override("font_size", 16)
+	close_btn.text = "✕"
+	close_btn.add_theme_font_size_override("font_size", 18)
+	var close_style := StyleBoxFlat.new()
+	close_style.bg_color = Color(0.0, 0.0, 0.0, 0.0)
+	close_style.set_content_margin_all(6)
+	close_btn.add_theme_stylebox_override("normal", close_style)
+	var close_hover := StyleBoxFlat.new()
+	close_hover.bg_color = Color(0.0, 0.0, 0.0, 0.08)
+	close_hover.set_corner_radius_all(4)
+	close_hover.set_content_margin_all(6)
+	close_btn.add_theme_stylebox_override("hover", close_hover)
+	close_btn.add_theme_color_override("font_color", COLOR_SUBTITLE)
+	close_btn.add_theme_color_override("font_hover_color", COLOR_TITLE)
 	close_btn.pressed.connect(close_book)
-	title_bar.add_child(close_btn)
+	header.add_child(close_btn)
 
-	# Separador
-	var sep := HSeparator.new()
-	sep.add_theme_constant_override("separation", 20)
-	vbox.add_child(sep)
+	# Línea separadora fina
+	var line := ColorRect.new()
+	line.custom_minimum_size = Vector2(0, 1)
+	line.color = COLOR_PAGE_BORDER
+	line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.add_child(line)
 
-	# Label de "vacío"
+	# === Label vacío ===
 	_empty_label = Label.new()
 	_empty_label.text = "No hay fotografías aún.\nUsa el zoom (click derecho) y captura con click izquierdo."
 	_empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_empty_label.add_theme_font_size_override("font_size", 18)
-	_empty_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.55))
+	_empty_label.add_theme_font_size_override("font_size", 16)
+	_empty_label.add_theme_color_override("font_color", COLOR_HINT)
 	_empty_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_empty_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	vbox.add_child(_empty_label)
 
-	# ScrollContainer con la grilla
+	# === ScrollContainer con la grilla de fotos ===
 	_scroll = ScrollContainer.new()
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.add_child(_scroll)
 
 	_grid = GridContainer.new()
-	_grid.columns = 4
+	_grid.columns = 3
 	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_grid.add_theme_constant_override("h_separation", 16)
-	_grid.add_theme_constant_override("v_separation", 16)
+	_grid.add_theme_constant_override("h_separation", 24)
+	_grid.add_theme_constant_override("v_separation", 24)
 	_scroll.add_child(_grid)
 
-	# Hint inferior
+	# === Pie de página ===
+	var footer_line := ColorRect.new()
+	footer_line.custom_minimum_size = Vector2(0, 1)
+	footer_line.color = COLOR_PAGE_BORDER
+	footer_line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.add_child(footer_line)
+
 	var hint_label := Label.new()
-	hint_label.text = "[B] Cerrar  |  Click en foto para ampliar  |  ← → Navegar"
+	hint_label.text = "[B] Cerrar    ·    Click en foto para ampliar    ·    ← → Navegar"
 	hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	hint_label.add_theme_font_size_override("font_size", 14)
-	hint_label.add_theme_color_override("font_color", Color(0.4, 0.4, 0.45))
+	hint_label.add_theme_font_size_override("font_size", 13)
+	hint_label.add_theme_color_override("font_color", COLOR_HINT)
 	vbox.add_child(hint_label)
 
 
 func _build_viewer() -> void:
-	_viewer = Control.new()
-	_viewer.set_script(PhotoViewerScript)
+	_viewer = PhotoViewerUI.new()
 	_viewer.name = "PhotoViewer"
 	add_child(_viewer)
 	_viewer.back_requested.connect(_on_viewer_back)
@@ -171,15 +223,13 @@ func _refresh_grid() -> void:
 	var photos := PhotoStorage.get_all_photos()
 	_empty_label.visible = photos.is_empty()
 	_scroll.visible = not photos.is_empty()
-	_count_label.text = "%d / %d" % [photos.size(), PhotoStorage.MAX_PHOTOS]
+	_count_label.text = "%d / %d fotos" % [photos.size(), PhotoStorage.MAX_PHOTOS]
 
 	for i in range(photos.size()):
 		var photo := photos[i]
-		var thumbnail := TextureButton.new()
-		thumbnail.set_script(PhotoThumbnailScript)
+		var thumbnail := PhotoThumbnail.new()
 		thumbnail.name = "Thumb_%s" % photo.photo_id.left(8)
 		_grid.add_child(thumbnail)
-		# Llamar setup después de que _ready del thumbnail se ejecute
 		thumbnail.setup.call_deferred(photo)
 		var idx := i
 		thumbnail.thumbnail_clicked.connect(func(_id: String): _open_viewer(idx))
