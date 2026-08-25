@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 ObjectManager="*uid://cv6hcym4tu5ta"
+ObjectDb="*uid://n5lrhqotewvl"
 
 [display]
 
