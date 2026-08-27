@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="Page" format=3 uid="uid://bxb0scxym4g23"]
-
-[ext_resource type="Script" uid="uid://b0d0mely0c1tk" path="res://src/core/main_game/pagina.gd" id="1_8ahsf"]
-
-[resource]
-script = ExtResource("1_8ahsf")
-titulo = "Anotaciones"
-mostrar_anotaciones = true
-metadata/_custom_type_script = "uid://b0d0mely0c1tk"

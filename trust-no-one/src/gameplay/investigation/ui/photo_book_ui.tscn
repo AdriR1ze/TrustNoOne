@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://src/gameplay/investigation/ui/annotation_list_ui.tscn" id="2_annot"]
 [ext_resource type="PackedScene" path="res://src/gameplay/investigation/ui/player_notes_ui.tscn" id="3_notes"]
 [ext_resource type="PackedScene" uid="uid://ml6yo8vav8tk" path="res://src/gameplay/investigation/ui/photo_viewer_ui.tscn" id="4_viewer"]
+[ext_resource type="Script" uid="uid://b2ct7vtmkoxm4" path="res://src/gameplay/investigation/ui/notebook_3d_view.gd" id="5_notebook"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_active"]
 content_margin_left = 16.0
@@ -22,25 +23,6 @@ content_margin_top = 8.0
 content_margin_right = 16.0
 content_margin_bottom = 8.0
 bg_color = Color(0, 0, 0, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_page"]
-content_margin_left = 40.0
-content_margin_top = 40.0
-content_margin_right = 40.0
-content_margin_bottom = 40.0
-bg_color = Color(0.96, 0.94, 0.9, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.78, 0.74, 0.68, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-shadow_color = Color(0, 0, 0, 0.25)
-shadow_size = 12
-shadow_offset = Vector2(4, 6)
 
 [node name="PhotoBookUI" type="Control" unique_id=243962367]
 process_mode = 3
@@ -63,21 +45,30 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.18, 0.14, 0.12, 0.92)
 
-[node name="PagePanel" type="PanelContainer" parent="." unique_id=1325573478]
+[node name="Notebook3DView" type="SubViewportContainer" parent="." unique_id=1178669445]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 120.0
-offset_top = 50.0
-offset_right = -120.0
-offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_page")
+script = ExtResource("5_notebook")
+
+[node name="PagePanel" type="Control" parent="." unique_id=1325573478]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 320.0
+offset_top = 120.0
+offset_right = -320.0
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PagePanel" unique_id=28985930]
-layout_mode = 2
+layout_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
@@ -87,12 +78,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
+[node name="PrevButton" type="Button" parent="PagePanel/VBoxContainer/Header" unique_id=928298924]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.45, 0.38, 1)
+theme_override_colors/font_hover_color = Color(0.25, 0.2, 0.15, 1)
+theme_override_font_sizes/font_size = 24
+text = "  <  "
+flat = true
+
 [node name="TitleLabel" type="Label" parent="PagePanel/VBoxContainer/Header" unique_id=559922816]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.25, 0.2, 0.15, 1)
 theme_override_font_sizes/font_size = 32
-text = "Libro de Investigación"
+text = "Fotos"
+
+[node name="NextButton" type="Button" parent="PagePanel/VBoxContainer/Header" unique_id=271225343]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.45, 0.38, 1)
+theme_override_colors/font_hover_color = Color(0.25, 0.2, 0.15, 1)
+theme_override_font_sizes/font_size = 24
+text = "  >  "
+flat = true
 
 [node name="Spacer" type="Control" parent="PagePanel/VBoxContainer/Header" unique_id=1177041272]
 layout_mode = 2
@@ -119,43 +128,6 @@ custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0.78, 0.74, 0.68, 1)
-
-[node name="TabBar" type="HBoxContainer" parent="PagePanel/VBoxContainer" unique_id=708317520]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 4
-
-[node name="PhotosTabButton" type="Button" parent="PagePanel/VBoxContainer/TabBar" unique_id=2032940352]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 16
-text = "📷  Fotos"
-flat = true
-
-[node name="AnnotationsTabButton" type="Button" parent="PagePanel/VBoxContainer/TabBar" unique_id=1155825708]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 16
-text = "📝  Objetos"
-flat = true
-
-[node name="NotesTabButton" type="Button" parent="PagePanel/VBoxContainer/TabBar" unique_id=146240222]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 16
-text = "🔍  Notas"
-flat = true
-
-[node name="TabSpacer" type="Control" parent="PagePanel/VBoxContainer/TabBar" unique_id=332402997]
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="SectionStack" type="Control" parent="PagePanel/VBoxContainer" unique_id=90188862]
 unique_name_in_owner = true

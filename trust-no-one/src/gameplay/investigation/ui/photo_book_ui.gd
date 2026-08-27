@@ -11,12 +11,14 @@ const PHOTO_THUMBNAIL_SCENE = preload("res://src/gameplay/investigation/ui/photo
 @export var tab_active_style: StyleBox
 @export var tab_inactive_style: StyleBox
 
-## Pestañas
+## Pestañas (Secciones)
 enum Section { PHOTOS, ANNOTATIONS, NOTES }
 var _current_section: Section = Section.PHOTOS
+var _max_sections: int = 3
 var _is_open: bool = false
 
 ## Referencias a nodos de la escena
+@onready var _notebook_3d: Notebook3DView = %Notebook3DView
 @onready var _viewer: PhotoViewerUI = %PhotoViewer
 @onready var _photos_container: Control = %PhotosContainer
 @onready var _annotations_ui: AnnotationListUI = %AnnotationsList
@@ -28,25 +30,19 @@ var _is_open: bool = false
 @onready var _count_label: Label = %CountLabel
 @onready var _hint_label: Label = %HintLabel
 @onready var _close_button: Button = %CloseButton
-@onready var _photos_tab_btn: Button = %PhotosTabButton
-@onready var _annot_tab_btn: Button = %AnnotationsTabButton
-@onready var _notes_tab_btn: Button = %NotesTabButton
-
-var _tab_buttons: Array[Button] = []
+@onready var _prev_button: Button = %PrevButton
+@onready var _next_button: Button = %NextButton
 
 ## Colores del libro
 const COLOR_TITLE := Color(0.25, 0.20, 0.15)          # Título marrón oscuro
 const COLOR_SUBTITLE := Color(0.50, 0.45, 0.38)       # Subtextos
-const COLOR_TAB_INACTIVE := Color(0.60, 0.55, 0.48)   # Texto pestaña inactiva
 
 
 func _ready() -> void:
 	visible = false
-	_tab_buttons = [_photos_tab_btn, _annot_tab_btn, _notes_tab_btn]
 
-	_photos_tab_btn.pressed.connect(func(): _switch_to_section(Section.PHOTOS))
-	_annot_tab_btn.pressed.connect(func(): _switch_to_section(Section.ANNOTATIONS))
-	_notes_tab_btn.pressed.connect(func(): _switch_to_section(Section.NOTES))
+	_prev_button.pressed.connect(_on_prev_pressed)
+	_next_button.pressed.connect(_on_next_pressed)
 
 	_close_button.pressed.connect(close_book)
 	_viewer.back_requested.connect(_on_viewer_back)
@@ -65,12 +61,20 @@ func _unhandled_input(event: InputEvent) -> void:
 			open_book()
 		get_viewport().set_input_as_handled()
 
-	# Si el libro está abierto, ESC lo cierra
-	if _is_open and event.is_action_pressed("ui_cancel"):
-		if _viewer.visible:
-			return  # El viewer maneja su propio ESC
-		close_book()
-		get_viewport().set_input_as_handled()
+	# Si el libro está abierto, manejar flechas para pasar hojas o ESC para cerrar
+	if _is_open:
+		if event.is_action_pressed("ui_cancel"):
+			if _viewer.visible:
+				return  # El viewer maneja su propio ESC
+			close_book()
+			get_viewport().set_input_as_handled()
+		elif not _viewer.visible and not _is_animating:
+			if event.is_action_pressed("ui_left"):
+				_on_prev_pressed()
+				get_viewport().set_input_as_handled()
+			elif event.is_action_pressed("ui_right"):
+				_on_next_pressed()
+				get_viewport().set_input_as_handled()
 
 
 ## Abre el libro de investigación.
@@ -80,7 +84,10 @@ func open_book() -> void:
 
 	_is_open = true
 	visible = true
-	_switch_to_section(_current_section)
+	
+	if _notebook_3d:
+		_notebook_3d.reset()
+	_switch_to_section(_current_section, true)
 
 	# Mostrar cursor y pausar movimiento
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -101,55 +108,72 @@ func close_book() -> void:
 	get_tree().paused = false
 
 
-func _apply_tab_style_active(btn: Button) -> void:
-	if tab_active_style:
-		btn.add_theme_stylebox_override("normal", tab_active_style)
-		btn.add_theme_stylebox_override("hover", tab_active_style)
-		btn.add_theme_stylebox_override("pressed", tab_active_style)
-	btn.add_theme_color_override("font_color", COLOR_TITLE)
-	btn.add_theme_color_override("font_hover_color", COLOR_TITLE)
-	btn.add_theme_color_override("font_pressed_color", COLOR_TITLE)
 
 
-func _apply_tab_style_inactive(btn: Button) -> void:
-	if tab_inactive_style:
-		btn.add_theme_stylebox_override("normal", tab_inactive_style)
-		btn.add_theme_stylebox_override("hover", tab_inactive_style)
-		btn.add_theme_stylebox_override("pressed", tab_inactive_style)
-	btn.add_theme_color_override("font_color", COLOR_TAB_INACTIVE)
-	btn.add_theme_color_override("font_hover_color", COLOR_SUBTITLE)
-	btn.add_theme_color_override("font_pressed_color", COLOR_SUBTITLE)
 
+var _is_animating: bool = false
 
 ## Cambia la sección activa del libro.
-func _switch_to_section(section: Section) -> void:
+func _switch_to_section(section: Section, force_instant: bool = false) -> void:
+	if _current_section == section and not force_instant:
+		return
+	if _is_animating:
+		return
+
+	var old_section = _current_section
 	_current_section = section
 
-	# Actualizar visibilidad
+	var forwards = section > old_section
+	var page_idx = int(section) - 1 if forwards else int(section)
+
+	# Ocultar contenido mientras se anima (excepto al abrir por primera vez)
+	if not force_instant and visible:
+		_photos_container.visible = false
+		_annotations_ui.visible = false
+		_notes_ui.visible = false
+		
+		_is_animating = true
+		if forwards:
+			_notebook_3d.play_page_turn(page_idx)
+		else:
+			_notebook_3d.play_page_turn_reverse(page_idx)
+		
+		await _notebook_3d.page_turn_finished
+		_is_animating = false
+
+	# Actualizar visibilidad de la nueva sección
 	_photos_container.visible = section == Section.PHOTOS
 	_annotations_ui.visible = section == Section.ANNOTATIONS
 	_notes_ui.visible = section == Section.NOTES
 
-	# Actualizar estilos de pestañas
-	for i in range(_tab_buttons.size()):
-		if i == int(section):
-			_apply_tab_style_active(_tab_buttons[i])
-		else:
-			_apply_tab_style_inactive(_tab_buttons[i])
+	# Actualizar controles de navegación
+	_prev_button.visible = section > 0
+	_next_button.visible = int(section) < _max_sections - 1
 
-	# Actualizar contenido según sección
+	# Actualizar contenido y título según sección
 	match section:
 		Section.PHOTOS:
+			_title_label.text = "Fotografías"
 			_refresh_grid()
-			_hint_label.text = "[B] Cerrar    ·    Click en foto para ampliar    ·    ← → Navegar"
+			_hint_label.text = "[B] Cerrar  ·  [<][>] Navegar Hojas  ·  Click en foto para ampliar"
 		Section.ANNOTATIONS:
+			_title_label.text = "Objetos Anotados"
 			_annotations_ui.refresh()
 			_count_label.text = "%d objetos anotados" % AnotacionesDb.cantidad()
-			_hint_label.text = "[B] Cerrar    ·    Click derecho para conectar    ·    Arrastrar para mover"
+			_hint_label.text = "[B] Cerrar  ·  [<][>] Navegar Hojas  ·  Click derecho para conectar  ·  Arrastrar para mover"
 		Section.NOTES:
+			_title_label.text = "Notas Personales"
 			_notes_ui.refresh()
 			_count_label.text = ""
-			_hint_label.text = "[B] Cerrar"
+			_hint_label.text = "[B] Cerrar  ·  [<][>] Navegar Hojas"
+
+func _on_prev_pressed() -> void:
+	if int(_current_section) > 0 and not _is_animating:
+		_switch_to_section(_current_section - 1 as Section)
+
+func _on_next_pressed() -> void:
+	if int(_current_section) < _max_sections - 1 and not _is_animating:
+		_switch_to_section(_current_section + 1 as Section)
 
 
 func _on_annotation_connection_state_changed(is_connecting: bool) -> void:

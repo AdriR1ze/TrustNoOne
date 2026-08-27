@@ -2,21 +2,14 @@
 
 [ext_resource type="Script" uid="uid://pvr0hjy253sr" path="res://src/core/main_game/main_game.gd" id="1_3fed5"]
 [ext_resource type="Script" uid="uid://dvxwgnaldvnig" path="res://src/debug/debug.gd" id="2_6yl8a"]
-[ext_resource type="Script" uid="uid://b6q7dmi143jso" path="res://src/core/main_game/libro.gd" id="2_ibp4d"]
 [ext_resource type="PackedScene" uid="uid://baiffk222kstj" path="res://src/debug/debug_text_overlay.tscn" id="3_6n4xl"]
 [ext_resource type="Script" uid="uid://cxx2qmpq5r1us" path="res://src/core/main_game/audio_manager.gd" id="3_l0hoa"]
-[ext_resource type="PackedScene" path="res://src/core/main_game/libro_ui.tscn" id="4_libro"]
-[ext_resource type="PackedScene" path="res://src/gameplay/investigation/ui/photo_book_ui.tscn" id="4_photobook"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_tg3de"]
+[ext_resource type="PackedScene" uid="uid://dhqiaqvkxedkx" path="res://src/gameplay/investigation/ui/photo_book_ui.tscn" id="4_photobook"]
 
 [node name="MainGame" type="Node" unique_id=995885749]
 script = ExtResource("1_3fed5")
 
 [node name="System" type="Node" parent="." unique_id=778923618]
-
-[node name="Libro" type="Node" parent="System" unique_id=968010533]
-script = ExtResource("2_ibp4d")
 
 [node name="AudioManager" type="Node" parent="System" unique_id=46484826]
 script = ExtResource("3_l0hoa")
@@ -41,20 +34,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="AbrirLibroButton" type="Button" parent="HudLayer/HudRoot" unique_id=2140345971]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 140.0
-offset_bottom = 40.0
-text = "Anotaciones"
-
-[node name="LibroUi" parent="HudLayer" unique_id=2140345972 instance=ExtResource("4_libro")]
-layout_mode = 3
-
 [node name="PhotoBookUI" parent="HudLayer" unique_id=745561474 instance=ExtResource("4_photobook")]
-layout_mode = 3
 
 [node name="PauseLayer" type="CanvasLayer" parent="." unique_id=2115188027]
 
@@ -86,7 +66,3 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1943506685]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6141658, 2.5593772, 10.802317)
-mesh = SubResource("BoxMesh_tg3de")
