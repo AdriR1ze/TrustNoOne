@@ -1,6 +1,10 @@
 extends StaticBody3D
 class_name Objeto
 
+## Nombre legible del objeto para mostrar en la UI de anotaciones.
+## Si está vacío, se usará "Objeto #ID".
+@export var nombre_objeto : String = ""
+
 var id_unico : int
 
 func _ready() -> void:
