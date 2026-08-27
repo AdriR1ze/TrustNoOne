@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://chlnwdcov6uyh"]
 
-[ext_resource type="Script" uid="uid://qm8hljy2a31t" path="res://static_body_3d.gd" id="1_qxwym"]
+[ext_resource type="Script" uid="uid://qm8hljy2a31t" path="res://src/core/autoloads/static_body_3d.gd" id="1_qxwym"]
 
 [sub_resource type="PrismMesh" id="PrismMesh_u177a"]
 
