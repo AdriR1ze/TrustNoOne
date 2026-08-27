@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://chlnwdcov6uyh"]
+
+[ext_resource type="Script" uid="uid://qm8hljy2a31t" path="res://static_body_3d.gd" id="1_qxwym"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_u177a"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_al2la"]
+radius = 1.5193886
+
+[node name="StaticBody3D" type="StaticBody3D" unique_id=938096365]
+script = ExtResource("1_qxwym")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1841664628]
+mesh = SubResource("PrismMesh_u177a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=850203909]
+shape = SubResource("SphereShape3D_al2la")

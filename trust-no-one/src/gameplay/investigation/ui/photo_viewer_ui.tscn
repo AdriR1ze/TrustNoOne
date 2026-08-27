@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://ml6yo8vav8tk"]
+
+[ext_resource type="Script" uid="uid://2fdpg7ebks2a" path="res://src/gameplay/investigation/ui/photo_viewer_ui.gd" id="1_viewer"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_page"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+bg_color = Color(0.96, 0.94, 0.9, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.74, 0.68, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 16
+shadow_offset = Vector2(4, 6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frame"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.78, 0.74, 0.68, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.1)
+shadow_size = 4
+shadow_offset = Vector2(1, 2)
+
+[node name="PhotoViewerUI" type="Control" unique_id=1120183425]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_viewer")
+
+[node name="Background" type="ColorRect" parent="." unique_id=963113786]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.1, 0.08, 0.95)
+
+[node name="PagePanel" type="PanelContainer" parent="." unique_id=3376798]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = 40.0
+offset_right = -100.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_page")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PagePanel" unique_id=1972371939]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="TopBar" type="HBoxContainer" parent="PagePanel/VBoxContainer" unique_id=2039284733]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BackButton" type="Button" parent="PagePanel/VBoxContainer/TopBar" unique_id=2110612285]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.35, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.25, 0.2, 0.15, 1)
+theme_override_font_sizes/font_size = 14
+text = "← Volver al álbum"
+flat = true
+
+[node name="Spacer" type="Control" parent="PagePanel/VBoxContainer/TopBar" unique_id=1475139004]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CounterLabel" type="Label" parent="PagePanel/VBoxContainer/TopBar" unique_id=243131318]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.45, 0.38, 1)
+theme_override_font_sizes/font_size = 15
+vertical_alignment = 1
+
+[node name="TopLine" type="ColorRect" parent="PagePanel/VBoxContainer" unique_id=669477140]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.78, 0.74, 0.68, 1)
+
+[node name="ImageRow" type="HBoxContainer" parent="PagePanel/VBoxContainer" unique_id=1641093563]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PrevButton" type="Button" parent="PagePanel/VBoxContainer/ImageRow" unique_id=714256213]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 22
+text = "◀"
+
+[node name="PhotoFrame" type="PanelContainer" parent="PagePanel/VBoxContainer/ImageRow" unique_id=1214806896]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+
+[node name="PhotoRect" type="TextureRect" parent="PagePanel/VBoxContainer/ImageRow/PhotoFrame" unique_id=913411166]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NextButton" type="Button" parent="PagePanel/VBoxContainer/ImageRow" unique_id=969297125]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 22
+text = "▶"
+
+[node name="BottomLine" type="ColorRect" parent="PagePanel/VBoxContainer" unique_id=1209188579]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.78, 0.74, 0.68, 1)
+
+[node name="NameLabel" type="Label" parent="PagePanel/VBoxContainer" unique_id=504028870]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.2, 0.15, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="InfoLabel" type="Label" parent="PagePanel/VBoxContainer" unique_id=2045287575]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.45, 0.38, 1)
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1

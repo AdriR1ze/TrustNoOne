@@ -1,0 +1,238 @@
+[gd_scene format=3 uid="uid://dhqiaqvkxedkx"]
+
+[ext_resource type="Script" uid="uid://by46ay4q6vmtu" path="res://src/gameplay/investigation/ui/photo_book_ui.gd" id="1_pbook"]
+[ext_resource type="PackedScene" path="res://src/gameplay/investigation/ui/annotation_list_ui.tscn" id="2_annot"]
+[ext_resource type="PackedScene" path="res://src/gameplay/investigation/ui/player_notes_ui.tscn" id="3_notes"]
+[ext_resource type="PackedScene" uid="uid://ml6yo8vav8tk" path="res://src/gameplay/investigation/ui/photo_viewer_ui.tscn" id="4_viewer"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_active"]
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+bg_color = Color(0.92, 0.89, 0.84, 1)
+border_width_bottom = 3
+border_color = Color(0.55, 0.35, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_inactive"]
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_page"]
+content_margin_left = 40.0
+content_margin_top = 40.0
+content_margin_right = 40.0
+content_margin_bottom = 40.0
+bg_color = Color(0.96, 0.94, 0.9, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.74, 0.68, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 12
+shadow_offset = Vector2(4, 6)
+
+[node name="PhotoBookUI" type="Control" unique_id=243962367]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pbook")
+tab_active_style = SubResource("StyleBoxFlat_tab_active")
+tab_inactive_style = SubResource("StyleBoxFlat_tab_inactive")
+
+[node name="BackgroundOverlay" type="ColorRect" parent="." unique_id=824141336]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18, 0.14, 0.12, 0.92)
+
+[node name="PagePanel" type="PanelContainer" parent="." unique_id=1325573478]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 50.0
+offset_right = -120.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_page")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PagePanel" unique_id=28985930]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Header" type="HBoxContainer" parent="PagePanel/VBoxContainer" unique_id=477843335]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="PagePanel/VBoxContainer/Header" unique_id=559922816]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.2, 0.15, 1)
+theme_override_font_sizes/font_size = 32
+text = "Libro de Investigación"
+
+[node name="Spacer" type="Control" parent="PagePanel/VBoxContainer/Header" unique_id=1177041272]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CountLabel" type="Label" parent="PagePanel/VBoxContainer/Header" unique_id=378527593]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.45, 0.38, 1)
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="PagePanel/VBoxContainer/Header" unique_id=1540353097]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.45, 0.38, 1)
+theme_override_colors/font_hover_color = Color(0.25, 0.2, 0.15, 1)
+theme_override_font_sizes/font_size = 18
+text = "✕"
+flat = true
+
+[node name="SeparatorLine" type="ColorRect" parent="PagePanel/VBoxContainer" unique_id=947443681]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.78, 0.74, 0.68, 1)
+
+[node name="TabBar" type="HBoxContainer" parent="PagePanel/VBoxContainer" unique_id=708317520]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="PhotosTabButton" type="Button" parent="PagePanel/VBoxContainer/TabBar" unique_id=2032940352]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "📷  Fotos"
+flat = true
+
+[node name="AnnotationsTabButton" type="Button" parent="PagePanel/VBoxContainer/TabBar" unique_id=1155825708]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "📝  Objetos"
+flat = true
+
+[node name="NotesTabButton" type="Button" parent="PagePanel/VBoxContainer/TabBar" unique_id=146240222]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "🔍  Notas"
+flat = true
+
+[node name="TabSpacer" type="Control" parent="PagePanel/VBoxContainer/TabBar" unique_id=332402997]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SectionStack" type="Control" parent="PagePanel/VBoxContainer" unique_id=90188862]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PhotosContainer" type="Control" parent="PagePanel/VBoxContainer/SectionStack" unique_id=1273563947]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EmptyLabel" type="Label" parent="PagePanel/VBoxContainer/SectionStack/PhotosContainer" unique_id=149184563]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.65, 0.6, 0.52, 1)
+theme_override_font_sizes/font_size = 16
+text = "No hay fotografías aún.
+Usa el zoom (click derecho) y captura con click izquierdo."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PagePanel/VBoxContainer/SectionStack/PhotosContainer" unique_id=1908606794]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="PagePanel/VBoxContainer/SectionStack/PhotosContainer/ScrollContainer" unique_id=844152680]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 24
+columns = 3
+
+[node name="AnnotationsList" parent="PagePanel/VBoxContainer/SectionStack" unique_id=929030317 instance=ExtResource("2_annot")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="PlayerNotes" parent="PagePanel/VBoxContainer/SectionStack" unique_id=958971420 instance=ExtResource("3_notes")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="FooterLine" type="ColorRect" parent="PagePanel/VBoxContainer" unique_id=138814018]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.78, 0.74, 0.68, 1)
+
+[node name="HintLabel" type="Label" parent="PagePanel/VBoxContainer" unique_id=615685509]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.6, 0.52, 1)
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+
+[node name="PhotoViewer" parent="." unique_id=767089470 instance=ExtResource("4_viewer")]
+unique_name_in_owner = true
+layout_mode = 1
