@@ -6,7 +6,7 @@ extends Control
 ## 3. Notas — Notas del jugador
 ## Se abre/cierra con la acción toggle_photo_book (tecla B).
 
-const PHOTO_THUMBNAIL_SCENE = preload("res://src/gameplay/investigation/ui/photo_thumbnail.tscn")
+const PHOTO_THUMBNAIL_SCENE = preload("res://src/gameplay/cuaderno/ui/seccion_fotos/photo_thumbnail.tscn")
 
 @export var tab_active_style: StyleBox
 @export var tab_inactive_style: StyleBox
@@ -17,7 +17,7 @@ var _current_section: Section = Section.PHOTOS
 var _max_sections: int = 3
 var _is_open: bool = false
 
-## Referencias a nodos de la escena
+## Referencias a nodos de la escena 
 @onready var _notebook_3d: Notebook3DView = %Notebook3DView
 @onready var _viewer: PhotoViewerUI = %PhotoViewer
 @onready var _photos_container: Control = %PhotosContainer

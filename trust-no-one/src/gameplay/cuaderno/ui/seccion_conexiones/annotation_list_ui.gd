@@ -3,7 +3,7 @@ extends Control
 ## Sección del libro de investigación que muestra los objetos anotados como textos manuscritos arrastrables
 ## y permite conectarlos con círculos y flechas dibujadas a mano (Click derecho en uno, click izquierdo en otro).
 
-const ANNOTATION_ENTRY_SCENE = preload("res://src/gameplay/investigation/ui/annotation_entry.tscn")
+const ANNOTATION_ENTRY_SCENE = preload("res://src/gameplay/cuaderno/ui/seccion_conexiones/annotation_entry.tscn")
 
 signal connection_state_changed(is_connecting: bool)
 

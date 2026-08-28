@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bcb61c5cb3tfc"]
 
-[ext_resource type="Script" path="res://src/gameplay/investigation/ui/annotation_list_ui.gd" id="1_annot"]
-[ext_resource type="Script" path="res://src/gameplay/investigation/ui/annotation_connections_canvas.gd" id="2_canvas"]
+[ext_resource type="Script" uid="uid://ifofr3jl0kao" path="res://src/gameplay/cuaderno/ui/seccion_conexiones/annotation_list_ui.gd" id="1_annot"]
+[ext_resource type="Script" uid="uid://dcc1b4q8gt63k" path="res://src/gameplay/cuaderno/ui/seccion_conexiones/annotation_connections_canvas.gd" id="2_canvas"]
 
-[node name="AnnotationListUI" type="Control"]
+[node name="AnnotationListUI" type="Control" unique_id=805599703]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_annot")
 
-[node name="EmptyLabel" type="Label" parent="."]
+[node name="EmptyLabel" type="Label" parent="." unique_id=1379443592]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -32,7 +32,7 @@ Acércate a un objeto y presiona Q para anotarlo."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CanvasArea" type="Control" parent="."]
+[node name="CanvasArea" type="Control" parent="." unique_id=1486506671]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 1
@@ -44,7 +44,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ConnectionsCanvas" type="Control" parent="CanvasArea"]
+[node name="ConnectionsCanvas" type="Control" parent="CanvasArea" unique_id=652029662]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -55,7 +55,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_canvas")
 
-[node name="EntriesContainer" type="Control" parent="CanvasArea"]
+[node name="EntriesContainer" type="Control" parent="CanvasArea" unique_id=504567903]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15

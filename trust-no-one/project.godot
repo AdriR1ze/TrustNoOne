@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.7", "Mobile")
 
 [autoload]
 
-PhotoStorage="*res://src/gameplay/investigation/photo_storage.gd"
+PhotoStorage="*res://src/gameplay/cuaderno/ui/logica_proceso_foto/photo_storage.gd"
 ObjectManager="*uid://cv6hcym4tu5ta"
 ObjectDb="*uid://n5lrhqotewvl"
 AnotacionesDb="*res://src/core/autoloads/AnotacionesDB.gd"
