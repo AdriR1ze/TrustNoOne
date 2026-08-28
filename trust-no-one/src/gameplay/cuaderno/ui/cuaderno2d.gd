@@ -32,6 +32,7 @@ var _is_open: bool = false
 @onready var _close_button: Button = %CloseButton
 @onready var _prev_button: Button = %PrevButton
 @onready var _next_button: Button = %NextButton
+@onready var _page_panel: Control = $PagePanel
 
 ## Colores del libro
 const COLOR_TITLE := Color(0.25, 0.20, 0.15)          # Título marrón oscuro
@@ -51,6 +52,9 @@ func _ready() -> void:
 	# Conectar señales del storage
 	PhotoStorage.photo_added.connect(_on_photo_added)
 	PhotoStorage.photo_removed.connect(_on_photo_removed)
+
+	# Conectar la señal del cuaderno 3D para alinear la UI 2D
+	_notebook_3d.notebook_rect_ready.connect(_on_notebook_rect_ready)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -106,6 +110,25 @@ func close_book() -> void:
 	# Recapturar mouse y reanudar
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	get_tree().paused = false
+
+
+## Alinea el PagePanel al rectángulo proyectado del cuaderno 3D.
+## Posiciona el contenido 2D dentro de la zona visible del cuaderno,
+## en la parte superior para que actúe como "título" de cada página.
+func _on_notebook_rect_ready(rect: Rect2) -> void:
+	# Pequeño margen interior para que el texto no pegue contra los bordes del cuaderno
+	var inset := 0.02
+	_page_panel.anchor_left = rect.position.x + inset
+	_page_panel.anchor_right = rect.position.x + rect.size.x - inset
+	# Colocar en la parte superior del cuaderno (primer 60% del alto del notebook)
+	_page_panel.anchor_top = rect.position.y + inset
+	_page_panel.anchor_bottom = rect.position.y + rect.size.y * 0.6
+	# Resetear offsets para que los anchors manden
+	_page_panel.offset_left = 0
+	_page_panel.offset_top = 0
+	_page_panel.offset_right = 0
+	_page_panel.offset_bottom = 0
+	print("cuaderno2d: PagePanel alineado a rect=%s" % rect)
 
 
 

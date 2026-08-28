@@ -7,6 +7,10 @@ extends SubViewportContainer
 const NOTEBOOK_MODEL_PATH = "res://assets/Cuaderno.glb"
 
 signal page_turn_finished
+signal notebook_rect_ready(rect: Rect2)
+
+## Rectángulo normalizado (0-1) donde el cuaderno se proyecta en pantalla
+var notebook_screen_rect := Rect2()
 
 var _viewport: SubViewport
 var _camera: Camera3D
@@ -96,13 +100,59 @@ func _load_notebook_model() -> void:
 
 	# Rotar 90 grados en Y para orientación landscape (anillas a la izquierda)
 	_notebook_instance.rotation_degrees = Vector3(0, -90, 0)
-	# Centrar el cuaderno bajo la cámara. El origen del modelo está en las anillas,
-	# las páginas se extienden ~0.095 en Z del modelo, que con rotación -90°Y se convierte en -X.
-	_notebook_instance.position = Vector3(0.095, 0, 0)
-	# Escalar si es necesario para que llene bien el viewport
-	_notebook_instance.scale = Vector3(0.7, 0.7, 0.7)
 
 	_viewport.add_child(_notebook_instance)
+
+	# --- Auto-centrado basado en el AABB real del modelo ---
+	# Esperar un frame para que las transforms globales se actualicen
+	await get_tree().process_frame
+
+	var aabb := _get_combined_aabb(_notebook_instance)
+	var center := aabb.get_center()
+
+	# Mover el modelo para que su centro geométrico quede en el origen (0,0,0)
+	_notebook_instance.position -= center
+	# Mantener Y en 0 (el modelo debe quedar en el suelo, la cámara mira desde arriba)
+	_notebook_instance.position.y = 0.0
+
+	# Posicionar la cámara para encuadrar el modelo automáticamente.
+	# La cámara mira hacia -Y (rotación -90° en X), así que la altura determina el zoom.
+	var model_extent := maxf(aabb.size.x, aabb.size.z)
+	var half_fov_rad := deg_to_rad(_camera.fov * 0.5)
+	# Distancia necesaria para que el modelo entre en el frustum, con un margen ajustado
+	var required_height := (model_extent * 0.5 * 0.92) / tan(half_fov_rad)
+	_camera.position = Vector3(0.0, required_height, 0.0)
+
+	print("Notebook3DView: AABB center=%s  size=%s  camera_height=%.4f" % [center, aabb.size, required_height])
+
+	# --- Calcular el rectángulo de pantalla normalizado del cuaderno ---
+	# La cámara mira hacia -Y. En este setup:
+	#   Mundo X → Pantalla horizontal
+	#   Mundo Z → Pantalla vertical (invertido)
+	# El frustum visible en el plano Y=0:
+	var half_visible_v := required_height * tan(half_fov_rad)
+	var aspect := float(_viewport.size.x) / float(_viewport.size.y)
+	var half_visible_h := half_visible_v * aspect
+
+	# El AABB ya fue centrado en el origen, recalcular después del desplazamiento
+	var recalc_aabb := _get_combined_aabb(_notebook_instance)
+	var nb_left := recalc_aabb.position.x
+	var nb_right := recalc_aabb.position.x + recalc_aabb.size.x
+	var nb_front := recalc_aabb.position.z  # Z negativo = arriba en pantalla
+	var nb_back := recalc_aabb.position.z + recalc_aabb.size.z
+
+	# Convertir coordenadas 3D a normalizadas (0-1) en pantalla
+	var screen_left := 0.5 + (nb_left / (2.0 * half_visible_h))
+	var screen_right := 0.5 + (nb_right / (2.0 * half_visible_h))
+	var screen_top := 0.5 - (nb_back / (2.0 * half_visible_v))   # Z+ → arriba en pantalla
+	var screen_bottom := 0.5 - (nb_front / (2.0 * half_visible_v))
+
+	notebook_screen_rect = Rect2(
+		screen_left, screen_top,
+		screen_right - screen_left, screen_bottom - screen_top
+	)
+	print("Notebook3DView: screen_rect = %s" % notebook_screen_rect)
+	notebook_rect_ready.emit(notebook_screen_rect)
 
 	# Buscar los nodos de las páginas directamente por nombre
 	# El GLB tiene: Notebook_Page_01 y Notebook_Page_02
@@ -121,8 +171,35 @@ func _load_notebook_model() -> void:
 	else:
 		push_warning("Notebook3DView: No se encontró Notebook_Page_02")
 
-	# Debug: listar todos los nodos del modelo para saber la estructura
-	_print_tree(_notebook_instance, "")
+
+## Calcula el AABB combinado de todas las MeshInstance3D hijas de un nodo.
+func _get_combined_aabb(root: Node3D) -> AABB:
+	var combined := AABB()
+	var first := true
+	for child in root.get_children():
+		if child is MeshInstance3D:
+			var mesh_inst := child as MeshInstance3D
+			var child_aabb := mesh_inst.get_aabb()
+			# Transformar el AABB local al espacio del root
+			var child_transform := mesh_inst.global_transform
+			var corners: Array[Vector3] = []
+			for i in range(8):
+				corners.append(child_transform * child_aabb.get_endpoint(i))
+			for corner in corners:
+				if first:
+					combined = AABB(corner, Vector3.ZERO)
+					first = false
+				else:
+					combined = combined.expand(corner)
+		if child is Node3D:
+			var sub_aabb := _get_combined_aabb(child as Node3D)
+			if sub_aabb.size != Vector3.ZERO:
+				if first:
+					combined = sub_aabb
+					first = false
+				else:
+					combined = combined.merge(sub_aabb)
+	return combined
 
 
 func _find_node_by_name(root: Node, target_name: String) -> Node3D:
