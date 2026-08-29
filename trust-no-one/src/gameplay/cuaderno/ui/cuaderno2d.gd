@@ -120,9 +120,9 @@ func _on_notebook_rect_ready(rect: Rect2) -> void:
 	var inset := 0.02
 	_page_panel.anchor_left = rect.position.x + inset
 	_page_panel.anchor_right = rect.position.x + rect.size.x - inset
-	# Colocar en la parte superior del cuaderno (primer 60% del alto del notebook)
+	# Colocar en casi todo el alto del cuaderno (95%) – el footer hint es compacto
 	_page_panel.anchor_top = rect.position.y + inset
-	_page_panel.anchor_bottom = rect.position.y + rect.size.y * 0.6
+	_page_panel.anchor_bottom = rect.position.y + rect.size.y * 0.95
 	# Resetear offsets para que los anchors manden
 	_page_panel.offset_left = 0
 	_page_panel.offset_top = 0
