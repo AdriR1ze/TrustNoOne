@@ -1,10 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://wk20mko0q8q4"]
 
-[ext_resource type="Script" path="res://src/gameplay/investigation/ui/annotation_entry.gd" id="1_entry"]
-
-[sub_resource type="SystemFont" id="SystemFont_handwriting"]
-font_names = PackedStringArray("Ink Free", "Segoe Print", "Segoe Script", "Chalkboard", "Comic Sans MS", "sans-serif")
-font_italic = true
+[ext_resource type="Script" uid="uid://bmia3iks5v04o" path="res://src/gameplay/cuaderno/ui/seccion_conexiones/annotation_entry.gd" id="1_h7ol2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_flat"]
 content_margin_left = 6.0
@@ -12,15 +8,19 @@ content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
 
-[node name="AnnotationEntry" type="PanelContainer"]
+[sub_resource type="SystemFont" id="SystemFont_handwriting"]
+font_names = PackedStringArray("Ink Free", "Segoe Print", "Segoe Script", "Chalkboard", "Comic Sans MS", "sans-serif")
+font_italic = true
+subpixel_positioning = 0
+
+[node name="AnnotationEntry" type="PanelContainer" unique_id=1739738136]
 mouse_default_cursor_shape = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_flat")
-script = ExtResource("1_entry")
+script = ExtResource("1_h7ol2")
 
-[node name="NameLabel" type="Label" parent="."]
+[node name="NameLabel" type="Label" parent="." unique_id=812467325]
 unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.14, 0.18, 0.32, 0.95)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.08)
 theme_override_constants/shadow_offset_x = 1
